@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    run: testpod
+  name: pod-using-sriov
+  namespace: test-sriov-ns
+  annotations:
+          k8s.v1.cni.cncf.io/networks: nadens7f1@ens61
+spec:
+  containers:
+  - image: quay.io/sfhassan/newimage
+    name: testpod
