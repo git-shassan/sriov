@@ -1,0 +1,14 @@
+apiVersion: sriovnetwork.openshift.io/v1
+kind: SriovNetworkNodePolicy
+metadata:
+  name: my-sriov-policy
+  namespace: openshift-sriov-network-operator 
+spec:
+  resourceName: nicens7f1
+  nodeSelector: {}
+  numVfs: 10
+  nicSelector:
+    pfNames: ["ens7f1"]
+    vendor: "8086"
+  deviceType: netdevice
+  # deviceType: vfio-pci
