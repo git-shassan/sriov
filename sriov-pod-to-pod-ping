@@ -1,0 +1,32 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    run: testpod
+  name: pod5-using-sriov
+  namespace: test-sriov-ns
+  annotations:
+          k8s.v1.cni.cncf.io/networks: nadens7f1
+spec:
+  containers:
+  - image: quay.io/sfhassan/newtools
+    name: testpod
+    securityContext:
+      privileged: true
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    run: testpod
+  name: pod6-using-sriov
+  namespace: test-sriov-ns
+  annotations:
+          k8s.v1.cni.cncf.io/networks: nadens7f1
+spec:
+  containers:
+  - image: quay.io/sfhassan/newtools
+    name: testpod
+    securityContext:
+      privileged: true
+# define interface address using: ip a add 192.168.133.1/24 dev net1
