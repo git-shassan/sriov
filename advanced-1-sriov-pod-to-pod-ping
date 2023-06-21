@@ -1,32 +1,47 @@
-apiVersion: v1
-kind: Pod
+apiVersion: sriovnetwork.openshift.io/v1
+kind: SriovNetwork
 metadata:
-  labels:
-    run: testpod
-  name: pod5-using-sriov
-  namespace: test-sriov-ns
-  annotations:
-          k8s.v1.cni.cncf.io/networks: nadens7f1
+  name: nadens7f1-1
+  namespace: openshift-sriov-network-operator 
 spec:
-  containers:
-  - image: quay.io/sfhassan/newtools
-    name: testpod
-    securityContext:
-      privileged: true
+  resourceName: nicens7f1
+  networkNamespace: test-sriov-ns
+  ipam: '{ "type": "static", "addresses": [{ "address": "192.168.133.1/24" }]}'
+---
+apiVersion: sriovnetwork.openshift.io/v1
+kind: SriovNetwork
+metadata:
+  name: nadens7f1-2
+  namespace: openshift-sriov-network-operator 
+spec:
+  resourceName: nicens7f1
+  networkNamespace: test-sriov-ns
+  ipam: '{ "type": "static", "addresses": [{ "address": "192.168.133.2/24" }]}'
 ---
 apiVersion: v1
 kind: Pod
 metadata:
   labels:
     run: testpod
-  name: pod6-using-sriov
+  name: pod1-using-sriov
   namespace: test-sriov-ns
   annotations:
-          k8s.v1.cni.cncf.io/networks: nadens7f1
+          k8s.v1.cni.cncf.io/networks: nadens7f1-1
 spec:
   containers:
   - image: quay.io/sfhassan/newtools
     name: testpod
-    securityContext:
-      privileged: true
-# define interface address using: ip a add 192.168.133.1/24 dev net1
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    run: testpod
+  name: pod2-using-sriov
+  namespace: test-sriov-ns
+  annotations:
+          k8s.v1.cni.cncf.io/networks: nadens7f1-2
+spec:
+  containers:
+  - image: quay.io/sfhassan/newtools
+    name: testpod
