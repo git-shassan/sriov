@@ -1,0 +1,52 @@
+apiVersion: sriovnetwork.openshift.io/v1
+kind: SriovNetwork
+metadata:
+  name: nadens7f1-410
+  namespace: openshift-sriov-network-operator 
+spec:
+  resourceName: nicens7f1
+  networkNamespace: test-sriov-ns
+  #trust: "on"
+  ipam: '{ "type": "static"}'
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    run: testpod
+  name: pod2-using-sriov
+  namespace: test-sriov-ns
+  annotations:
+          k8s.v1.cni.cncf.io/networks: |-
+            [
+              {
+                "name": "nadens7f1-410",
+                "interface": "net1",
+                "ips": ["10.60.3.2/24"]
+              }
+            ]
+spec:
+  containers:
+  - image: quay.io/sfhassan/newtools
+    name: testpod
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    run: testpod
+  name: pod3-using-sriov
+  namespace: test-sriov-ns
+  annotations:
+          k8s.v1.cni.cncf.io/networks: |-
+            [
+              {
+                "name": "nadens7f1-410",
+                "interface": "eth1",
+                "ips": ["10.60.3.3/24"]
+              }
+            ]
+spec:
+  containers:
+  - image: quay.io/sfhassan/newtools
+    name: testpod
