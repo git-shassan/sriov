@@ -6,17 +6,7 @@ metadata:
 spec:
   resourceName: nicens7f1
   networkNamespace: test-sriov-ns
-  ipam: '{ "type": "static", "addresses": [{ "address": "192.168.133.1/24" }]}'
----
-apiVersion: sriovnetwork.openshift.io/v1
-kind: SriovNetwork
-metadata:
-  name: nadens7f1-2
-  namespace: openshift-sriov-network-operator 
-spec:
-  resourceName: nicens7f1
-  networkNamespace: test-sriov-ns
-  ipam: '{ "type": "static", "addresses": [{ "address": "192.168.133.2/24" }]}'
+  ipam: '{ "type": "static"}'
 ---
 apiVersion: v1
 kind: Pod
@@ -26,7 +16,14 @@ metadata:
   name: pod1-using-sriov
   namespace: test-sriov-ns
   annotations:
-          k8s.v1.cni.cncf.io/networks: nadens7f1-1
+          k8s.v1.cni.cncf.io/networks: |-
+            [
+              {
+                "name": "nadens7f1-1",
+                "interface": "eth1",
+                "ips": ["192.168.133.10/24"]
+              }
+            ]
 spec:
   containers:
   - image: quay.io/sfhassan/newtools
@@ -40,7 +37,14 @@ metadata:
   name: pod2-using-sriov
   namespace: test-sriov-ns
   annotations:
-          k8s.v1.cni.cncf.io/networks: nadens7f1-2
+          k8s.v1.cni.cncf.io/networks: |-
+            [
+              {
+                "name": "nadens7f1-1",
+                "interface": "net1",
+                "ips": ["192.168.133.20/24"]
+              }
+            ]
 spec:
   containers:
   - image: quay.io/sfhassan/newtools
