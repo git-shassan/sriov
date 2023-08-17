@@ -12,4 +12,3 @@ metadata:
 spec:
   resourceName: nicens7f1
   networkNamespace: test-sriov-ns
-  # ipam: '{ "type": "static", "addresses": [{ "address": "191.168.1.7/24" }]}'
